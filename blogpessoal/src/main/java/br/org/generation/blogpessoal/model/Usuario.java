@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "tb_usuarios")
 public class Usuario {
@@ -24,22 +26,34 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@NotNull(message = "O atributo Nome é Obrigatório!")
+	@NotNull(message = "O atributo nome é obrigatório!")
 	private String nome;
 
-	@NotNull(message = "O atributo Usuário é Obrigatório!")
-	@Email(message = "O atributo Usuário deve ser um email válido!")
+	@ApiModelProperty(example = "email@email.com.br")
+	@NotBlank(message = "O atributo Usuário é obrigatório!")
+	@Email(message = "O atributo usuário deve ser um e-mail válido!")
 	private String usuario;
 
+
 	
-	@NotBlank(message = "O atributo Senha é Obrigatório!")
-	@Size(min = 8, message = "A Senha deve ter no mínimo 8 caracteres")
+	@NotBlank(message = "O atributo senha é obrigatório!")
+	@Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres.")
 	private String senha;
 
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
+	
+	public Usuario(long id, String nome, String usuario, String senha) {
+		
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+	}
+	
+	public Usuario() { }
 
 	public long getId() {
 		return id;
